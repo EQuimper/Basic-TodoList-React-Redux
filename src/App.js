@@ -13,21 +13,46 @@ const App = ({ actions, todos }) => {
     actions.addTodo(todo);
     e.target.querySelector('[name="todo"]').value = '';
   }
+
   const handleDelete = id => actions.deleteTodo(id);
+
+  const handleCompleted = id => actions.toggleCompleted(id);
+
+  const handleChange = e => actions.filterByChar(e.target.value);
+
+  const checkCompleted = value => {
+    if (value) {
+      return {
+        textDecoration: 'line-through'
+      }
+    }
+    return null;
+  }
+
   return (
     <div className="root">
+      <div>
+        <h3>{todos.filter(todo => todo.completed).length} / {todos.length} Todos Completed</h3>
+        <input type="text" placeholder="Type for filtering" onChange={e => handleChange(e)}/>
+      </div>
       <form onSubmit={e => handleSubmit(e)}>
         <input type="text" placeholder="Add a new todo" name="todo" />
         <button>Add</button>
       </form>
-      <ul>
-        {todos.map((todo, i) => (
-          <li key={i}>
-            {todo.todo}
-            <button onClick={() => handleDelete(todo.id)}>X</button>
+      <ul style={{ listStyle: 'none' }}>
+        {todos.map(todo => (
+          <li key={todo.id}>
+            <div className="list-item">
+              <input type="checkbox" name="todoCheck" onChange={() => handleCompleted(todo.id)} />
+              <h5 style={checkCompleted(todo.completed)}>{todo.todo}</h5>
+              <button onClick={() => handleDelete(todo.id)}>X</button>
+            </div>
           </li>
         ))}
       </ul>
+      <div>
+        <button onClick={() => actions.clearCompleted()}>Clear Completed</button>
+      </div>
     </div>
   );
 }
