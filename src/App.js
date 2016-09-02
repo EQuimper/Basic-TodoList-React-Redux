@@ -13,7 +13,7 @@ const App = ({ actions, todos }) => {
     actions.addTodo(todo);
     e.target.querySelector('[name="todo"]').value = '';
   }
-  const handleDelete = i => actions.deleteTodo(i);
+  const handleDelete = id => actions.deleteTodo(id);
   return (
     <div className="root">
       <form onSubmit={e => handleSubmit(e)}>
@@ -23,8 +23,8 @@ const App = ({ actions, todos }) => {
       <ul>
         {todos.map((todo, i) => (
           <li key={i}>
-            {todo}
-            <button onClick={() => handleDelete(i)}>X</button>
+            {todo.todo}
+            <button onClick={() => handleDelete(todo.id)}>X</button>
           </li>
         ))}
       </ul>
