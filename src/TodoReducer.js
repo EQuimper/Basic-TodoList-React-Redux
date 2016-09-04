@@ -5,7 +5,7 @@ export const TodoReducer = (state = [], action) => {
     case actions.ADD_TODO:
       return [
         ...state,
-        {
+        { // Give us a object with this prop
           todo: action.todo,
           completed: false,
           id: Math.floor(Math.random() * 100) + 1
@@ -16,13 +16,13 @@ export const TodoReducer = (state = [], action) => {
     case actions.TOGGLE_COMPLETED:
       return state.map(todo =>
         todo.id === action.id ?
-          Object.assign({}, todo, { completed: !todo.completed }) :
+          { // Assure we don't mutate the object
+            ...todo,
+            completed: !todo.completed
+          } :
         todo);
     case actions.CLEAR_COMPLETED:
       return state.filter(todo => !todo.completed);
-    case actions.FILTER_BY_CHAR:
-      const matchesFilter = new RegExp(action.ch, "i");
-      return state.filter(todo => !action.ch || matchesFilter.test(todo));
     default:
       return state;
   }
